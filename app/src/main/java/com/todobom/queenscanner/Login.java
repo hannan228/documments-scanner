@@ -42,6 +42,17 @@ public class Login extends AppCompatActivity {
         password = findViewById(R.id.passwordText);
         submitButtonn = findViewById(R.id.submitButton);
         mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+
+        if (mAuth.getCurrentUser() != null) {
+            Toast.makeText(Login.this, "user sign in", Toast.LENGTH_LONG)
+                    .show();
+            startActivity(new Intent(Login.this, MainActivity.class));
+            finish();
+        }else {
+            Toast.makeText(Login.this, "not signed in", Toast.LENGTH_LONG).show();
+        }
+
 
         submitButtonn.setOnClickListener(new View.OnClickListener()
 
@@ -49,7 +60,7 @@ public class Login extends AppCompatActivity {
             @Override
             public void onClick (View v){
 
-                emailText = email.getText().toString();
+                emailText = email.getText().toString().trim();
                 passwordTxt = password.getText().toString();
 
                 mAuth.signInWithEmailAndPassword(""+emailText, ""+passwordTxt)
@@ -70,5 +81,9 @@ public class Login extends AppCompatActivity {
             }
 
         });
+    }
+
+    public void registerFirst(View view) {
+        startActivity(new Intent(getApplicationContext(),RegisterUser.class));
     }
 }

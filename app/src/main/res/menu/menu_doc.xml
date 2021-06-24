@@ -35,7 +35,6 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/saveFor"
-        android:icon="@drawable/ic_save_for_future"
         android:title="Save for future "
         app:showAsAction="never" />
 

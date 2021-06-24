@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by Phí Văn Tuấn on 5/12/2018.
- */
 
 public class DocsPresenter implements DocsContract.IDocsPresenter {
     private Context context;

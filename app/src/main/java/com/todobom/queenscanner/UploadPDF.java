@@ -18,10 +18,16 @@ import android.widget.Toast;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import static com.joshuabutton.queenscanner.PresenterScanner.FOLDER_NAME;
 
@@ -29,6 +35,7 @@ public class UploadPDF extends AppCompatActivity {
     ImageView upload;
     Uri imageuri = null;
     File folder;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,15 +72,25 @@ public class UploadPDF extends AppCompatActivity {
             // Here we are initialising the progress dialog box
             dialog = new ProgressDialog(this);
             dialog.setMessage("Uploading");
-
             // this will show message uploading
-            // while pdf is uploading
             dialog.show();
+
+            String mEmail;
+            mAuth = FirebaseAuth.getInstance();
+            FirebaseUser currentUser = mAuth.getCurrentUser();
+            FirebaseDatabase database = FirebaseDatabase.getInstance();
+            mEmail = ""+currentUser.getEmail();
+            int i = mEmail.indexOf(".");
+            String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(Calendar.getInstance().getTime());
+            DatabaseReference myRef = database.getReference(""+mEmail.substring(0, i)).child("pdf").child(""+timeStamp);
+
+
+            // while pdf is uploading
             imageuri = data.getData();
 
-            final String timestamp = "" + System.currentTimeMillis();
+            final String timestamp1 = "" + System.currentTimeMillis();
             StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-            final String messagePushID = timestamp;
+            final String messagePushID = timestamp1;
 
             Toast.makeText(UploadPDF.this, imageuri.toString(), Toast.LENGTH_SHORT).show();
 
@@ -98,6 +115,7 @@ public class UploadPDF extends AppCompatActivity {
                         Uri uri = task.getResult();
                         String myurl;
                         myurl = uri.toString();
+                        myRef.child(""+timestamp1).setValue(""+myurl);
                         Toast.makeText(UploadPDF.this, "Uploaded Successfully", Toast.LENGTH_SHORT).show();
                     } else {
                         dialog.dismiss();

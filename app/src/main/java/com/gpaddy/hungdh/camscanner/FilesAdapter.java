@@ -19,6 +19,7 @@ import android.print.PrintManager;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,6 +33,10 @@ import com.balysv.materialripple.MaterialRippleLayout;
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.todobom.queenscanner.R;
@@ -45,17 +50,14 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by swati on 9/10/15.
- * <p>
- * An adapter to view the existing PDF files
- */
+
 
 @TargetApi(Build.VERSION_CODES.KITKAT)
 public class FilesAdapter extends BaseAdapter {
@@ -64,6 +66,7 @@ public class FilesAdapter extends BaseAdapter {
     private static LayoutInflater inflater;
     private ArrayList<String> mFeedItems;
     private String mFileName;
+    private FirebaseAuth mAuth;
 
     static class viewHolder {
 
@@ -363,22 +366,44 @@ public class FilesAdapter extends BaseAdapter {
 
         dialog.setMessage("Saving...");
         dialog.show();
+
         Intent intent = new Intent(Intent.ACTION_SEND);
         intent.setType("application/pdf");
+
         File file = new File(name);
+
+        String mEmail;
+        mAuth = FirebaseAuth.getInstance();
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        mEmail = ""+currentUser.getEmail();
+        int i = mEmail.indexOf(".");
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(Calendar.getInstance().getTime());
+        DatabaseReference myRef = database.getReference(""+mEmail.substring(0, i)).child("pdf").child(""+timeStamp);
+
+
+        String str =  ""+name;
+        int ii = str.indexOf("r/");
+        int j = str.indexOf(".");
+
+        Log.d("dash index","dash: "+ii+" j: "+j +"sub: "+str.substring(ii++,j));
+        String pdfName = str.substring(ii++,j);
+        Log.d("imageUrl", "imageUrl:name "+name);
+
         Uri uri;
-        if (Build.VERSION.SDK_INT < 24)
+        if (Build.VERSION.SDK_INT < 24){
             uri = Uri.fromFile(file);
+        }
         else {
             uri = FileProvider.getUriForFile(mContext, mContext.getPackageName() + ".provider", file);
         }
 
 //        intent.putExtra(Intent.EXTRA_STREAM, uri);
-        final String timestamp = "" + System.currentTimeMillis();
+        final String timestamp1 = "" + System.currentTimeMillis();
         StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-        final String messagePushID = timestamp;
+        final String messagePushID = timestamp1;
 
-        final StorageReference filepath = storageReference.child(messagePushID + "." + "pdf");
+        final StorageReference filepath = storageReference.child(pdfName + "." + "pdf");
 //        Toast.makeText(UploadPDF.this, filepath.getName(), Toast.LENGTH_SHORT).show();
         filepath.putFile(uri).continueWithTask(new Continuation() {
             @Override
@@ -398,6 +423,7 @@ public class FilesAdapter extends BaseAdapter {
                     Uri uri = task.getResult();
                     String myurl;
                     myurl = uri.toString();
+                    myRef.child(""+pdfName).setValue(""+myurl);
                     Toast.makeText(mContext, "Saved Successfully", Toast.LENGTH_SHORT).show();
                 } else {
                     dialog.dismiss();

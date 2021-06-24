@@ -15,9 +15,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-/**
- * Created by Phí Văn Tuấn on 30/11/2018.
- */
 
 public class DocumentPresenter implements DocumentContract.IDocumentPresenter {
     private DocumentContract.DocumentView iView;

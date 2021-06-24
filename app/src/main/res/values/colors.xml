@@ -16,6 +16,7 @@
     <color name="orange">#FF9800</color>
     <color name="teal">#009688</color>
     <color name="light_blue">#03A9F4</color>
+    <color name="background">#dddddd</color>
 
     <color name="blue_200">#FF90CAF9</color>
     <color name="blue_500">#FF2196F3</color>

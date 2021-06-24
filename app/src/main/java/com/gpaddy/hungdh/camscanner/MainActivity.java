@@ -19,6 +19,7 @@ import androidx.core.content.FileProvider;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,6 +31,10 @@ import com.MainApplication;
 //import com.google.android.gms.ads.AdListener;
 //import com.google.android.gms.ads.AdRequest;
 //import com.google.android.gms.ads.AdView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.gpaddy.hungdh.listdoc.DocsActivity;
 import com.gpaddyv1.queenscanner.Config.AdsTask;
 import com.gpaddyv1.queenscanner.activities.SimpleDocumentScannerActivity;
@@ -38,6 +43,8 @@ import com.todobom.queenscanner.AccountActivity;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import static com.joshuabutton.queenscanner.PresenterScanner.FOLDER_NAME;
 
@@ -50,6 +57,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int REQUEST_CAMERA_PERMISSION = 2;
     private String pathCamera = null;
     private LinearLayout llAds;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +66,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         // Obtain the shared Tracker instance.
         MainApplication application = (MainApplication) getApplication();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+
+        mAuth = FirebaseAuth.getInstance();
+
+
+
+//        String mEmail;
+//        mAuth = FirebaseAuth.getInstance();
+//        FirebaseUser currentUser = mAuth.getCurrentUser();
+//        mEmail = ""+currentUser.getEmail();
+//        int i = mEmail.indexOf(".");
+//        DatabaseReference myRef = database.getReference(""+mEmail.substring(0, i));
+
+       String str =  "/storage/emulated/0/QueenScanner/hello.pdfhello.pdf";
+       int i = str.indexOf("r/");
+       int j = str.indexOf(".");
+        Log.d("dash index","dash: "+i);
+       Log.d("dash index","dash: "+i+" j: "+j +"sub: "+str.substring(i++,j));
+
+        String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
+
+
+        Log.d("user Name","timeStamp"+timeStamp);
+
 
         if (ActivityCompat.checkSelfPermission(MainActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
             initView();
@@ -69,30 +101,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     }
 
-    private void initAds() {
-//        MobileAds.initialize(this, getResources().getString(R.string.admod_app_id));
-//
-//        mAdView = findViewById(R.id.adView);
-//        AdRequest adRequest = new AdRequest.Builder().build();
-//        mAdView.loadAd(adRequest);
-//
-//        mInterstitialAd = new InterstitialAd(this);
-//        mInterstitialAd.setAdUnitId(getResources().getString(R.string.ads_full_id));
-//        mInterstitialAd.loadAd(new AdRequest.Builder().build());
-//        mInterstitialAd.setAdListener(new AdListener() {
-//            @Override
-//            public void onAdClosed() {
-//                // Load the next interstitial.
-//                mInterstitialAd.loadAd(new AdRequest.Builder().build());
-//            }
-//        });
-//        adsTask.loadInterstitialAdsFacebook();
-    }
+
 
     @Override
     protected void onRestart() {
         super.onRestart();
-
     }
 
     private void initView() {
@@ -101,12 +114,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         cvFromGallery = (CardView) findViewById(R.id.cvFromGallery);
         cvGallery = (CardView) findViewById(R.id.cvGallery);
         cvPDF = (CardView) findViewById(R.id.cvPDF);
-
         cvCamera.setOnClickListener(this);
         cvFromGallery.setOnClickListener(this);
         cvGallery.setOnClickListener(this);
         cvPDF.setOnClickListener(this);
-
 
     }
 
@@ -128,31 +139,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ActivityCompat.requestPermissions(MainActivity.this, new String[]{Manifest.permission.CAMERA}, REQUEST_CAMERA_PERMISSION);
             }
         }
-
     }
 
-    private void initBannerAds() {
-//        final AdView mAdView = (AdView) findViewById(R.id.adView);
-//
-//        if (mAdView != null) {
-//            mAdView.setAdListener(new AdListener() {
-//                @Override
-//                public void onAdFailedToLoad(int i) {
-//                    super.onAdFailedToLoad(i);
-//                    mAdView.setVisibility(View.GONE);
-//                }
-//
-//                @Override
-//                public void onAdLoaded() {
-//                    super.onAdLoaded();
-//                    mAdView.setVisibility(View.VISIBLE);
-//                }
-//            });
-//
-//            AdRequest adRequest = new AdRequest.Builder().build();
-//            mAdView.loadAd(adRequest);
-//        }
-    }
+
+
 
     @Override
     public void onClick(View view) {
@@ -247,6 +237,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             startActivity(new Intent(MainActivity.this, AccountActivity.class));
             return true;
         }
+        if (item.getItemId() == R.id.logout) {
+            mAuth.signOut();
+            startActivity(new Intent(MainActivity.this, Login.class));
+            return true;
+        }
         if (item.getItemId() == R.id.action_settings0) {
             callSettings();
             return true;
@@ -303,5 +298,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     public void pdfUpload(View view) {
         startActivity(new Intent(MainActivity.this,UploadPDF.class));
+    }
+
+    public void downlodpdf(View view) {
+        startActivity(new Intent(MainActivity.this,FutureSavedPDF.class));
+    }
+
+    public void downloadImage(View view) {
+        startActivity(new Intent(MainActivity.this,FutureSavedImage.class));
     }
 }

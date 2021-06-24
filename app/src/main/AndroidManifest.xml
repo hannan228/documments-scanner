@@ -27,7 +27,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".UploadPDF"></activity>
+        <activity android:name=".RegisterUser"></activity>
+        <activity android:name=".WebViewForDownload" />
+        <activity android:name=".FutureSavedPDF" />
+        <activity android:name=".FutureSavedImage" />
+        <activity android:name=".UploadPDF" />
         <activity android:name=".AddPost" />
         <activity android:name=".Login" />
         <activity android:name=".SplashScreen">

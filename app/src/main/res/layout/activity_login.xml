@@ -79,6 +79,7 @@
                 android:layout_marginTop="20dp"
                 android:text="Create New Account"
                 android:textColor="@color/teal"
+                android:onClick="registerFirst"
 
                 />
 

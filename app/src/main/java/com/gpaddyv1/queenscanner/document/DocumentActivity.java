@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuPopupHelper;
@@ -34,6 +35,15 @@ import android.widget.Toast;
 
 
 import com.github.clans.fab.FloatingActionButton;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.gpaddy.hungdh.DynamicAdapter;
 import com.gpaddy.hungdh.OnChangeDynamic;
 import com.gpaddy.hungdh.OnLongClickItem;
@@ -44,12 +54,15 @@ import com.gpaddyv1.queenscanner.Config.AdsTask;
 import com.gpaddyv1.queenscanner.activities.SimpleDocumentScannerActivity;
 import com.joshuabutton.queenscanner.handle.HandleActivity;
 import com.todobom.queenscanner.R;
+import com.todobom.queenscanner.UploadPDF;
 
 import org.askerov.dynamicgrid.DynamicGridView;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import butterknife.BindView;
@@ -91,6 +104,10 @@ public class DocumentActivity extends BaseActivity implements com.joshuabutton.q
     private int REQUEST_CAMERA_PERMISSION = 201;
     boolean isSave = false;
     private AdsTask adsTask;
+
+    private FirebaseAuth mAuth;
+
+
 
     @Override
     protected int getLayoutRes() {
@@ -328,7 +345,7 @@ public class DocumentActivity extends BaseActivity implements com.joshuabutton.q
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 final File file = new File(folder);
-                switch (menuItem.getItemId()) {
+                switch (menuItem.getItemId()){
                     case R.id.menuRename:
                         showDialog();
                         break;
@@ -343,6 +360,7 @@ public class DocumentActivity extends BaseActivity implements com.joshuabutton.q
                         presenter.shareFile(getDefaultName() + "/" + tvName.getText().toString() + ".pdf");
                         break;
                     case R.id.menuSaveToPDF:
+
                         String pdfName = file.getName() + System.currentTimeMillis() + ".pdf";
                         List<String> myPath = new ArrayList<>();
                         List<Object> arrModel = dynamicAdapter.getItems();
@@ -352,6 +370,71 @@ public class DocumentActivity extends BaseActivity implements com.joshuabutton.q
                         }
                         ImageUtils.convertImageToPdf(myPath, folder + "/" + pdfName, DocumentActivity.this);
                         break;
+
+                    case R.id.saveFor:
+
+                        ProgressDialog dialog;
+                        String mEmail;
+                        String pdfName2 = file.getName();
+                        mAuth = FirebaseAuth.getInstance();
+                        FirebaseUser currentUser = mAuth.getCurrentUser();
+                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                        mEmail = ""+currentUser.getEmail();
+                        int i = mEmail.indexOf(".");
+                        String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(Calendar.getInstance().getTime());
+                        DatabaseReference myRef = database.getReference(""+mEmail.substring(0, i)).child("image").child(""+pdfName2);
+
+                        Toast.makeText(getApplicationContext(), "Uploading...", Toast.LENGTH_LONG).show();
+
+                        // Here we are initialising the progress dialog box
+//                        dialog = new ProgressDialog(getApplicationContext());
+//                        dialog.setMessage("Uploading");
+                        // this will show message uploading
+//                        dialog.show();
+
+                        Uri uri;
+
+                        for (File file1 : file.listFiles()) {
+                            Log.d("gg", "onClick:" + file1);
+                            uri = Uri.fromFile(file1);
+
+                            String timestamp1 = "" + System.currentTimeMillis();
+                            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                            final String messagePushID = timestamp1;
+
+                            StorageReference filepath = storageReference.child(""+messagePushID);
+//        Toast.makeText(UploadPDF.this, filepath.getName(), Toast.LENGTH_SHORT).show();
+                            filepath.putFile(uri).continueWithTask(new Continuation() {
+                                @Override
+                                public Object then(@NonNull Task task) throws Exception {
+                                    if (!task.isSuccessful()) {
+                                        Log.d("gg", "onClick:" + task.getException());
+                                        throw task.getException();
+                                    }
+                                    return filepath.getDownloadUrl();
+                                }
+                            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Uri> task) {
+                                    if (task.isSuccessful()) {
+                                        // After uploading is done it progress
+                                        // dialog box will be dismissed
+
+                                        Uri uri = task.getResult();
+                                        String myurl;
+                                        myurl = uri.toString();
+                                        myRef.child(""+timestamp1).setValue(""+myurl);
+                                        Toast.makeText(getApplicationContext(), "Saved Successfully", Toast.LENGTH_SHORT).show();
+                                    } else {
+
+                                        Toast.makeText(getApplicationContext(), "Failed"+task.getException(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
+//                            dialog.dismiss();
+                        }
+
+                        break;
                     case R.id.menuDelete:
                         if (file.exists()) {
                             final android.app.AlertDialog.Builder builder = new android.app.AlertDialog.Builder(DocumentActivity.this);
@@ -360,8 +443,9 @@ public class DocumentActivity extends BaseActivity implements com.joshuabutton.q
                                     .setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialogInterface, int i) {
-                                            for (File file1 : file.listFiles())
-                                                file1.delete();
+                                            for (File file1 : file.listFiles()){
+                                                Log.d("gg", "onClick:"+file1);
+                                                file1.delete();}
                                             file.delete();
                                             Toast.makeText(DocumentActivity.this, "Deleted", Toast.LENGTH_LONG).show();
                                             adapter.notifyDataSetChanged();

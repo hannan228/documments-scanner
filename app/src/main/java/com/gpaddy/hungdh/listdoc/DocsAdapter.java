@@ -21,9 +21,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by Phí Văn Tuấn on 5/12/2018.
- */
 
 public class DocsAdapter extends RecyclerView.Adapter<DocsAdapter.ViewHolder> {
     private Context context;
