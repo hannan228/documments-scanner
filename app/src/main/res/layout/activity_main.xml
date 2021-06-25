@@ -294,6 +294,12 @@
             android:text="upload"
             android:onClick="pdfUpload"
             ></Button>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="OCR"
+            android:onClick="imageToTEXT"
+            ></Button>
 
     </LinearLayout>
 

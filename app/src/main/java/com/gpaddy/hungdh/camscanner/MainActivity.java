@@ -307,4 +307,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void downloadImage(View view) {
         startActivity(new Intent(MainActivity.this,FutureSavedImage.class));
     }
+
+    public void imageToTEXT(View view) {
+        startActivity(new Intent(MainActivity.this,ImageToText.class));
+    }
 }
