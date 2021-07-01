@@ -1,9 +1,5 @@
 package com.gpaddy.hungdh.util;
 
-/**
- * Created by Phí Văn Tuấn on 22/11/2018.
- */
-
 import org.opencv.core.CvType;
 import org.opencv.core.MatOfPoint;
 import org.opencv.core.MatOfPoint2f;

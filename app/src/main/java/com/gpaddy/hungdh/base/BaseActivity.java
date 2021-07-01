@@ -5,9 +5,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import butterknife.ButterKnife;
 
-/**
- * Created by Phí Văn Tuấn on 24/11/2018.
- */
 
 public abstract class BaseActivity extends AppCompatActivity {
     protected abstract int getLayoutRes();

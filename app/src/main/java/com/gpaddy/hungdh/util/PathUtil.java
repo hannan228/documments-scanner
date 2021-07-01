@@ -22,11 +22,6 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Phí Văn Tuấn on 23/11/2018.
- */
-
-
 public class PathUtil {
     /*
      * Gets the file path of the given Uri.

@@ -1,9 +1,5 @@
 package com.gpaddy.hungdh.camscanner;
 
-/**
- * Created by HUNGDH on 1/19/2017.
- */
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;

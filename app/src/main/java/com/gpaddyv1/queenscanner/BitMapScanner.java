@@ -19,10 +19,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Phí Văn Tuấn on 24/11/2018.
- */
-
 public class BitMapScanner {
     private RectFinder finder;
     private NativeClass nativeClass;

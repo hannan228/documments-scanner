@@ -10,10 +10,6 @@ import com.joshuabutton.queenscanner.process.view.IProcessView;
 import java.io.File;
 import java.util.List;
 
-/**
- * Created by Phí Văn Tuấn on 24/11/2018.
- */
-
 public class ProcessPresenter implements com.joshuabutton.queenscanner.process.presenter.IProcessPresenter {
     private Context context;
     private IProcessView iProcessView;

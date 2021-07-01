@@ -24,6 +24,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -51,7 +53,9 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -60,13 +64,48 @@ import butterknife.ButterKnife;
 
 
 @TargetApi(Build.VERSION_CODES.KITKAT)
-public class FilesAdapter extends BaseAdapter {
+public class FilesAdapter extends BaseAdapter implements Filterable {
 
     private MyPDFActivity mContext;
     private static LayoutInflater inflater;
     private ArrayList<String> mFeedItems;
+    private List<String> pdfNameListAll;
     private String mFileName;
     private FirebaseAuth mAuth;
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+    Filter filter = new Filter() {
+        // run on a background thread automatically
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<String> filteredList = new ArrayList<>();
+
+            if (charSequence.toString().isEmpty()){
+                filteredList.addAll(pdfNameListAll);
+            }else {
+                for (String pdflist: pdfNameListAll ){
+                    if (pdflist.toLowerCase().contains(charSequence.toString().toLowerCase())){
+                        filteredList.add(pdflist);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+            return filterResults;
+        }
+        // run on a ui thread
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            mFeedItems.clear();
+            mFeedItems.addAll((Collection<? extends String>) results.values);
+            notifyDataSetChanged();
+        }
+    };
+
 
     static class viewHolder {
 
@@ -93,7 +132,7 @@ public class FilesAdapter extends BaseAdapter {
     public FilesAdapter(MyPDFActivity context, ArrayList<String> FeedItems) {
         this.mContext = context;
         this.mFeedItems = FeedItems;
-
+        this.pdfNameListAll = new ArrayList<>(FeedItems);
         inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
@@ -176,7 +215,13 @@ public class FilesAdapter extends BaseAdapter {
                                         shareFile(mFeedItems.get(position));
                                         break;
                                     case 5: //Save for future
-                                        saveForFuture(mFeedItems.get(position));
+                                        mAuth = FirebaseAuth.getInstance();
+                                        if (mAuth.getCurrentUser() == null){
+                                            Toast.makeText(mContext, "Please Login first..", Toast.LENGTH_SHORT).show();
+                                        }else {
+                                            saveForFuture(mFeedItems.get(position));
+                                        }
+
                                         break;
 
                                 }

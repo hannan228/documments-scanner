@@ -11,9 +11,6 @@ import com.gpaddy.hungdh.util.PathUtil;
 
 import java.io.File;
 
-/**
- * Created by Phí Văn Tuấn on 30/11/2018.
- */
 
 public class HandlePresenter implements HandleContract.IHandlePresenter {
     private Context context;

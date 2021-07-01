@@ -5,10 +5,6 @@ import java.util.List;
 
 import it.chengdazhi.styleimageview.Styler;
 
-/**
- * Created by Phí Văn Tuấn on 27/11/2018.
- */
-
 public class FilterModel {
     private String title;
     private int mode;

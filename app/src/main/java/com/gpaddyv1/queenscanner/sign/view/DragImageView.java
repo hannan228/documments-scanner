@@ -11,10 +11,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-/**
- * Created by Phí Văn Tuấn on 28/11/2018.
- */
-
 public class DragImageView extends View {
     private int MUTILDOWM = 2;
     private int MUTILMOVE = 3;

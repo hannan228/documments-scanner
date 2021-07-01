@@ -6,9 +6,7 @@ import androidx.multidex.MultiDex;
 
 import ly.img.android.ImgLySdk;
 
-
 public class MainApplication extends Application {
-
 
     @Override
     protected void attachBaseContext(Context base) {

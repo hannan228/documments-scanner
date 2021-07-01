@@ -2,10 +2,6 @@ package com.joshuabutton.queenscanner.document;
 
 import java.util.List;
 
-/**
- * Created by Phí Văn Tuấn on 30/11/2018.
- */
-
 public interface DocumentContract {
     interface DocumentView{
 

@@ -1,8 +1,5 @@
 package com.gpaddy.hungdh.util;
 
-/**
- * Created by Phí Văn Tuấn on 22/11/2018.
- */
 import android.graphics.Bitmap;
 import android.util.Log;
 

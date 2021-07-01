@@ -80,8 +80,8 @@ public class FutureSavedImage extends AppCompatActivity implements BlogRecyclerA
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-                String date = dataSnapshot.getKey();
-                 date = date.substring(0,10);
+                String date = dataSnapshot.getKey().toString();
+//                 date = date.substring(0,10);
 
                 dateList.add(date);
 
@@ -109,7 +109,6 @@ public class FutureSavedImage extends AppCompatActivity implements BlogRecyclerA
 //                Toast.makeText(PostListActivity.this,""+blogRecyclerAdapter,Toast.LENGTH_LONG).show();
                     recyclerView.setAdapter(blogRecyclerAdapter);
                     blogRecyclerAdapter.notifyDataSetChanged();
-
                 }
 
 
@@ -138,7 +137,6 @@ public class FutureSavedImage extends AppCompatActivity implements BlogRecyclerA
         mShimmerViewContainer.stopShimmerAnimation();
         mShimmerViewContainer.setVisibility(View.GONE);
     }
-
 
     @Override
     public void onImageclick(int position) {

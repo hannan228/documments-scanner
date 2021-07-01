@@ -53,9 +53,6 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
 
 
         String imageUrl = blogList.get(position).toString();
-//        String dat = dateList.get(position);
-
-//        holder.datee.setText("k");
 
 
 //        Log.d("taggg",""+dat);
@@ -76,7 +73,7 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 
         public ImageView image;
-        public TextView datee;
+//        public TextView datee;
 
         OnImageclickListener onImageclickListener;
 

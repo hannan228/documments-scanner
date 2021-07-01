@@ -8,10 +8,6 @@ import android.widget.Toast;
 import com.creativityapps.gmailbackgroundlibrary.BackgroundMail;
 import com.todobom.queenscanner.R;
 
-/**
- * Created by HUNGDH on 4/17/2017.
- */
-
 public class AutoEmail {
 
     public static final String KEY_SWITCH_EMAIL_IMAGE = "prefSwitchOnEmailImage";

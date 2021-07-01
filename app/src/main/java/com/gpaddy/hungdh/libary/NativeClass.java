@@ -20,9 +20,6 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Created by Phí Văn Tuấn on 23/11/2018.
- */
 
 public class NativeClass {
     static {

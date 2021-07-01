@@ -1,8 +1,5 @@
 package com.styleimageview;
 
-/**
- * Created by chengdazhi on 8/10/16.
- */
 public class StyleMatrixs {
 
     private static final float[] COMMON = new float[] {

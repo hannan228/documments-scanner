@@ -5,6 +5,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,23 +19,29 @@ import com.squareup.picasso.Picasso;
 import com.todobom.queenscanner.FutureSavedPDF;
 import com.todobom.queenscanner.R;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
-public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.ViewHolder> {
+public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.ViewHolder> implements Filterable {
 
     private Context context;
-    //    private String [] blogList;
-    private List<String> blogList;
+    private List<String> dateList;
     private List<String> pdfNameList;
+    private List<String> pdfNameListAll;
+
     private OnPDFclickListener monPDFclickListener;
 
     public PdfAdapter() {
     }
 
-    public PdfAdapter(Context context, List<String> blogList, List<String> blogList2, OnPDFclickListener onPDFclickListener) {
+    public PdfAdapter(Context context, List<String> dateList, List<String> blogList2, OnPDFclickListener onPDFclickListener) {
         this.context = context;
-        this.blogList = blogList;
+        this.dateList = dateList;
+
         this.pdfNameList = blogList2;
+        this.pdfNameListAll = new ArrayList<>(blogList2);
+
         this.monPDFclickListener = onPDFclickListener;
 
     }
@@ -51,14 +59,50 @@ public class PdfAdapter extends RecyclerView.Adapter<PdfAdapter.ViewHolder> {
 
         holder.name.setText(pdfNameList.get(position));
 
-        //        holder.datee.setText(blogList.get());
+        String s = dateList.get(position);
+        Log.d("TAG", "onBindViewHolder: "+s);
+        holder.datee.setText(""+s);
 
     }
 
     @Override
     public int getItemCount() {
-        return blogList.size();
+        return pdfNameList.size();
     }
+
+    @Override
+    public Filter getFilter() {
+        return filter;
+    }
+
+    Filter filter = new Filter() {
+       // run on a background thread automatically
+        @Override
+        protected FilterResults performFiltering(CharSequence charSequence) {
+            List<String> filteredList = new ArrayList<>();
+
+            if (charSequence.toString().isEmpty()){
+                filteredList.addAll(pdfNameListAll);
+            }else {
+                for (String pdflist: pdfNameListAll ){
+                    if (pdflist.toLowerCase().contains(charSequence.toString().toLowerCase())){
+                        filteredList.add(pdflist);
+                    }
+                }
+            }
+
+            FilterResults filterResults = new FilterResults();
+            filterResults.values = filteredList;
+            return filterResults;
+        }
+        // run on a ui thread
+        @Override
+        protected void publishResults(CharSequence constraint, FilterResults results) {
+            pdfNameList.clear();
+            pdfNameList.addAll((Collection<? extends String>) results.values);
+            notifyDataSetChanged();
+        }
+    };
 
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
 

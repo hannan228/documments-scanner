@@ -86,4 +86,8 @@ public class Login extends AppCompatActivity {
     public void registerFirst(View view) {
         startActivity(new Intent(getApplicationContext(),RegisterUser.class));
     }
+
+    public void onGuest(View view) {
+        startActivity(new Intent(Login.this, MainActivity.class));
+    }
 }

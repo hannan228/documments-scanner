@@ -8,10 +8,6 @@ import com.todobom.queenscanner.R;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Phí Văn Tuấn on 26/11/2018.
- */
-
 public class SignColorModel {
     private String name;
     private int resColor;

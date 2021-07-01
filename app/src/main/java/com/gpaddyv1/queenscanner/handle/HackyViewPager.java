@@ -5,10 +5,6 @@ import androidx.viewpager.widget.ViewPager;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 
-/**
- * Created by Phí Văn Tuấn on 1/12/2018.
- */
-
 public class HackyViewPager extends ViewPager {
 
     public HackyViewPager(Context context) {

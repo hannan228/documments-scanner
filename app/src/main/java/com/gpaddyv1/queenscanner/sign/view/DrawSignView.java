@@ -18,10 +18,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 
-/**
- * Created by Phí Văn Tuấn on 26/11/2018.
- */
-
 public class DrawSignView extends View {
     private Canvas cacheCanvas;
     private Bitmap cachebBitmap;

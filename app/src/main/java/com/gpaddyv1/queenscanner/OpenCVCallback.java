@@ -11,11 +11,9 @@ import org.opencv.android.LoaderCallbackInterface;
 
 import timber.log.Timber;
 
-/**
- * This class is used to display custom messaging when using OpenCV via the initAsync method.
- *
- * Created by jbttn on 5/24/16.
- */
+
+//  This class is used to display custom messaging when using OpenCV via the initAsync method.
+
 public abstract class OpenCVCallback implements LoaderCallbackInterface {
     Activity mContext;
 

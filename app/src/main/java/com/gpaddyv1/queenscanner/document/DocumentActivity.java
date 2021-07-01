@@ -104,9 +104,7 @@ public class DocumentActivity extends BaseActivity implements com.joshuabutton.q
     private int REQUEST_CAMERA_PERMISSION = 201;
     boolean isSave = false;
     private AdsTask adsTask;
-
     private FirebaseAuth mAuth;
-
 
 
     @Override
@@ -373,67 +371,70 @@ public class DocumentActivity extends BaseActivity implements com.joshuabutton.q
 
                     case R.id.saveFor:
 
-                        ProgressDialog dialog;
-                        String mEmail;
-                        String pdfName2 = file.getName();
-                        mAuth = FirebaseAuth.getInstance();
-                        FirebaseUser currentUser = mAuth.getCurrentUser();
-                        FirebaseDatabase database = FirebaseDatabase.getInstance();
-                        mEmail = ""+currentUser.getEmail();
-                        int i = mEmail.indexOf(".");
-                        String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(Calendar.getInstance().getTime());
-                        DatabaseReference myRef = database.getReference(""+mEmail.substring(0, i)).child("image").child(""+pdfName2);
+                        if (mAuth.getCurrentUser() == null) {
+                            Toast.makeText(getApplicationContext(), "Please Login first..", Toast.LENGTH_SHORT).show();
+                        }else {
+                            ProgressDialog dialog;
+                            String mEmail;
+                            String pdfName2 = file.getName();
+                            mAuth = FirebaseAuth.getInstance();
+                            FirebaseUser currentUser = mAuth.getCurrentUser();
+                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                            mEmail = "" + currentUser.getEmail();
+                            int i = mEmail.indexOf(".");
+                            String timeStamp = new SimpleDateFormat("yyyy-MM-dd_HHmmss").format(Calendar.getInstance().getTime());
+                            DatabaseReference myRef = database.getReference("" + mEmail.substring(0, i)).child("image").child("" + pdfName2);
 
-                        Toast.makeText(getApplicationContext(), "Uploading...", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "Uploading...", Toast.LENGTH_LONG).show();
 
-                        // Here we are initialising the progress dialog box
+                            // Here we are initialising the progress dialog box
 //                        dialog = new ProgressDialog(getApplicationContext());
 //                        dialog.setMessage("Uploading");
-                        // this will show message uploading
+                            // this will show message uploading
 //                        dialog.show();
 
-                        Uri uri;
+                            Uri uri;
 
-                        for (File file1 : file.listFiles()) {
-                            Log.d("gg", "onClick:" + file1);
-                            uri = Uri.fromFile(file1);
+                            for (File file1 : file.listFiles()) {
+                                Log.d("gg", "onClick:" + file1);
+                                uri = Uri.fromFile(file1);
 
-                            String timestamp1 = "" + System.currentTimeMillis();
-                            StorageReference storageReference = FirebaseStorage.getInstance().getReference();
-                            final String messagePushID = timestamp1;
+                                String timestamp1 = "" + System.currentTimeMillis();
+                                StorageReference storageReference = FirebaseStorage.getInstance().getReference();
+                                final String messagePushID = timestamp1;
 
-                            StorageReference filepath = storageReference.child(""+messagePushID);
+                                StorageReference filepath = storageReference.child("" + messagePushID);
 //        Toast.makeText(UploadPDF.this, filepath.getName(), Toast.LENGTH_SHORT).show();
-                            filepath.putFile(uri).continueWithTask(new Continuation() {
-                                @Override
-                                public Object then(@NonNull Task task) throws Exception {
-                                    if (!task.isSuccessful()) {
-                                        Log.d("gg", "onClick:" + task.getException());
-                                        throw task.getException();
+                                filepath.putFile(uri).continueWithTask(new Continuation() {
+                                    @Override
+                                    public Object then(@NonNull Task task) throws Exception {
+                                        if (!task.isSuccessful()) {
+                                            Log.d("gg", "onClick:" + task.getException());
+                                            throw task.getException();
+                                        }
+                                        return filepath.getDownloadUrl();
                                     }
-                                    return filepath.getDownloadUrl();
-                                }
-                            }).addOnCompleteListener(new OnCompleteListener<Uri>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Uri> task) {
-                                    if (task.isSuccessful()) {
-                                        // After uploading is done it progress
-                                        // dialog box will be dismissed
+                                }).addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Uri> task) {
+                                        if (task.isSuccessful()) {
+                                            // After uploading is done it progress
+                                            // dialog box will be dismissed
 
-                                        Uri uri = task.getResult();
-                                        String myurl;
-                                        myurl = uri.toString();
-                                        myRef.child(""+timestamp1).setValue(""+myurl);
-                                        Toast.makeText(getApplicationContext(), "Saved Successfully", Toast.LENGTH_SHORT).show();
-                                    } else {
+                                            Uri uri = task.getResult();
+                                            String myurl;
+                                            myurl = uri.toString();
+                                            myRef.child("" + timestamp1).setValue("" + myurl);
+                                            Toast.makeText(getApplicationContext(), "Saved Successfully", Toast.LENGTH_SHORT).show();
+                                        } else {
 
-                                        Toast.makeText(getApplicationContext(), "Failed"+task.getException(), Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(getApplicationContext(), "Failed" + task.getException(), Toast.LENGTH_SHORT).show();
+                                        }
                                     }
-                                }
-                            });
+                                });
 //                            dialog.dismiss();
+                            }
                         }
-
                         break;
                     case R.id.menuDelete:
                         if (file.exists()) {

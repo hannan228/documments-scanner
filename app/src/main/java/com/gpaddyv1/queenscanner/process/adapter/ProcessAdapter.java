@@ -18,10 +18,6 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-/**
- * Created by Phí Văn Tuấn on 24/11/2018.
- */
-
 public class ProcessAdapter extends RecyclerView.Adapter<ProcessAdapter.ViewHolder> {
     private Context context;
     private List<FilterModel> lstFilter;

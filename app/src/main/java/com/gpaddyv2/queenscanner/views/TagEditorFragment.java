@@ -17,9 +17,6 @@ import com.todobom.queenscanner.R;
 
 import java.io.IOException;
 
-/**
- * Created by allgood on 29/05/16.
- */
 public class TagEditorFragment extends DialogFragment {
 
     private Runnable mRunOnDetach;

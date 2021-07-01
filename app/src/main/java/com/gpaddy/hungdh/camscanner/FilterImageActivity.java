@@ -54,9 +54,6 @@ import ly.img.android.ui.activities.PhotoEditorBuilder;
 
 import static com.joshuabutton.queenscanner.PresenterScanner.FOLDER_NAME;
 
-/**
- * Created by HUNGDH on 1/16/2017.
- */
 
 public class FilterImageActivity extends Activity implements View.OnClickListener {
 

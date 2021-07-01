@@ -79,11 +79,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 //        int i = mEmail.indexOf(".");
 //        DatabaseReference myRef = database.getReference(""+mEmail.substring(0, i));
 
-       String str =  "/storage/emulated/0/QueenScanner/hello.pdfhello.pdf";
-       int i = str.indexOf("r/");
-       int j = str.indexOf(".");
+        String str =  "/storage/emulated/0/QueenScanner/hello.pdfhello.pdf";
+        int i = str.indexOf("r/");
+        int j = str.indexOf(".");
         Log.d("dash index","dash: "+i);
-       Log.d("dash index","dash: "+i+" j: "+j +"sub: "+str.substring(i++,j));
+        Log.d("dash index","dash: "+i+" j: "+j +"sub: "+str.substring(i++,j));
 
         String timeStamp = new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime());
 
@@ -301,14 +301,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     public void downlodpdf(View view) {
-        startActivity(new Intent(MainActivity.this,FutureSavedPDF.class));
+        if (mAuth.getCurrentUser() == null){
+            Toast.makeText(this, "Please Login first..", Toast.LENGTH_SHORT).show();
+        }else{
+            startActivity(new Intent(MainActivity.this,FutureSavedPDF.class));
+        }
     }
 
     public void downloadImage(View view) {
-        startActivity(new Intent(MainActivity.this,FutureSavedImage.class));
+        if (mAuth.getCurrentUser() == null){
+            Toast.makeText(this, "Please Login first..", Toast.LENGTH_SHORT).show();
+        }else {
+
+            startActivity(new Intent(MainActivity.this, FutureSavedImage.class));
+        }
     }
 
     public void imageToTEXT(View view) {
-        startActivity(new Intent(MainActivity.this,ImageToText.class));
+        if (mAuth.getCurrentUser() == null){
+            Toast.makeText(this, "Please Login first..", Toast.LENGTH_SHORT).show();
+        }else {
+
+            startActivity(new Intent(MainActivity.this, ImageToText.class));
+        }
+    }
+
+    public void translateText(View view) {
+        if (mAuth.getCurrentUser() == null){
+            Toast.makeText(this, "Please Login first..", Toast.LENGTH_SHORT).show();
+        }else {
+
+            startActivity(new Intent(MainActivity.this, TranslateText.class));
+        }
     }
 }

@@ -18,10 +18,6 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Phí Văn Tuấn on 1/12/2018.
- */
-
 public class ViewPagerAdapter extends PagerAdapter {
     private List<DocumentModel> lst;
     private Context context;

@@ -1,8 +1,5 @@
 package com.todobom.queenscanner.helpers;
 
-/**
- * Created by allgood on 05/03/16.
- */
 public class OpenNoteMessage  {
 
     private String command;

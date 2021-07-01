@@ -9,9 +9,6 @@ import android.widget.ImageView;
 
 import com.todobom.queenscanner.R;
 
-/**
- * Created by chengdazhi on 8/10/16.
- */
 public class StyleImageView extends ImageView {
     private Styler styler;
 

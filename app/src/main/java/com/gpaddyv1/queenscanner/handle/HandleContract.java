@@ -4,10 +4,6 @@ import android.graphics.Bitmap;
 
 import com.github.chrisbanes.photoview.PhotoView;
 
-/**
- * Created by Phí Văn Tuấn on 30/11/2018.
- */
-
 public interface HandleContract {
     interface IHandleView{
         void sign();

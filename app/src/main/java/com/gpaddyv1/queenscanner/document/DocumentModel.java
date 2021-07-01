@@ -9,9 +9,6 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 
-/**
- * Created by Phí Văn Tuấn on 30/11/2018.
- */
 
 public class DocumentModel implements Serializable {
     private String path;

@@ -47,9 +47,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 
-/**
- * Created by allgood on 05/03/16.
- */
 public class ImageProcessor extends Handler {
 
     private static final String TAG = "ImageProcessor";

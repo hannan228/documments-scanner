@@ -8,10 +8,6 @@ import android.view.inputmethod.InputMethodManager;
 
 import static com.joshuabutton.queenscanner.PresenterScanner.FOLDER_NAME;
 
-/**
- * Created by Phí Văn Tuấn on 30/11/2018.
- */
-
 public class Const {
     public static final String FOLDER_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + FOLDER_NAME;
     public static final String FOLDER_DOC = FOLDER_PATH + "Document/";

@@ -3,6 +3,7 @@ package com.todobom.queenscanner;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,6 +11,8 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -78,9 +81,7 @@ public class FutureSavedPDF extends AppCompatActivity implements PdfAdapter.OnPD
             @Override
             public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
 
-
                 str = dataSnapshot.getValue().toString();
-
                 String date = dataSnapshot.getKey().toString();
 
                 dateList.add(date.substring(0,10));
@@ -95,7 +96,6 @@ public class FutureSavedPDF extends AppCompatActivity implements PdfAdapter.OnPD
                 array = str.split(",");
                 Log.d("data","dataaa: snapshot "+array.length);
                 Log.d("data","dataaa: snapshot "+str);
-
 
                 String pdfName;
 
@@ -118,13 +118,12 @@ public class FutureSavedPDF extends AppCompatActivity implements PdfAdapter.OnPD
                     Log.d("data","dat index: "+ array[i]);
                     Log.d("data","dat name: "+ pdfName);
 
-                    blogRecyclerAdapter = new PdfAdapter(FutureSavedPDF.this, dateList, mylist2, onPDFclickListener  );
-//                Toast.makeText(PostListActivity.this,""+blogRecyclerAdapter,Toast.LENGTH_LONG).show();
-                    recyclerView.setAdapter(blogRecyclerAdapter);
-                    blogRecyclerAdapter.notifyDataSetChanged();
-
                 }
 
+                blogRecyclerAdapter = new PdfAdapter(FutureSavedPDF.this, dateList, mylist2, onPDFclickListener  );
+//                Toast.makeText(PostListActivity.this,""+blogRecyclerAdapter,Toast.LENGTH_LONG).show();
+                recyclerView.setAdapter(blogRecyclerAdapter);
+                blogRecyclerAdapter.notifyDataSetChanged();
 
             }
 
@@ -159,7 +158,7 @@ public class FutureSavedPDF extends AppCompatActivity implements PdfAdapter.OnPD
         String s = mylist.get(position);
         String pdfName = mylist2.get(position);
 
-        Toast.makeText(this, "Downloading... ", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Diverting to Download... ", Toast.LENGTH_SHORT).show();
 
         Log.d("position","position"+ s);
 
@@ -168,4 +167,25 @@ public class FutureSavedPDF extends AppCompatActivity implements PdfAdapter.OnPD
         startActivity(intent);
 
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_search, menu);
+        MenuItem item = menu.findItem(R.id.action_search);
+        SearchView searchView = (SearchView) item.getActionView();
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                blogRecyclerAdapter.getFilter().filter(newText);
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
+    }
 }
+

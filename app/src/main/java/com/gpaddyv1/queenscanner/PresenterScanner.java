@@ -24,10 +24,6 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by Phí Văn Tuấn on 24/11/2018.
- */
-
 public class PresenterScanner implements IPresenterScanner {
     public static String FOLDER_NAME = "/QueenScanner/";
     public static String FOLDER_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + FOLDER_NAME;
