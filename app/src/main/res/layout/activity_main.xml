@@ -27,7 +27,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
                 android:layout_marginLeft="10dp"
-                android:text="Creaate Document"
+                android:text="Create Document"
                 ></TextView>
 
             <LinearLayout
@@ -122,7 +122,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="20dp"
                 android:layout_marginLeft="10dp"
-                android:text="Creaated Document"
+                android:text="Created Document"
                 ></TextView>
 
             <LinearLayout

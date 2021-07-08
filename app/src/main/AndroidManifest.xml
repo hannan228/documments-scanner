@@ -37,10 +37,9 @@
         <activity android:name=".UploadPDF" />
         <activity android:name=".AddPost" />
         <activity android:name=".Login" />
-        <activity android:name=".SplashScreen">
+        <activity android:name=".SplashScreen" android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
