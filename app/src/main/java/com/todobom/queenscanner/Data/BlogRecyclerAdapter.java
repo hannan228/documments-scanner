@@ -94,9 +94,9 @@ public class BlogRecyclerAdapter extends RecyclerView.Adapter<BlogRecyclerAdapte
             onImageclickListener.onImageclick(getAdapterPosition());
         }
     }
+
     public interface OnImageclickListener{
         void onImageclick(int position);
     }
-
 
 }

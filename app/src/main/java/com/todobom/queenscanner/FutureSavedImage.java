@@ -60,7 +60,6 @@ public class FutureSavedImage extends AppCompatActivity implements BlogRecyclerA
         mEmail = ""+currentUser.getEmail();
         int i = mEmail.indexOf(".");
 
-
         mDatabase = FirebaseDatabase.getInstance();
         mDatabaseReference = mDatabase.getReference(""+mEmail.substring(0, i)).child("image");
         mDatabaseReference.keepSynced(true);
